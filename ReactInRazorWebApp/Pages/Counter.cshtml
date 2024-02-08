@@ -1,0 +1,28 @@
+﻿@page
+@using Codercrest.ReactNet
+@using Codercrest.ReactNet.Pages
+
+
+@model ReactInRazorApp.Pages.CounterModel
+@{
+    ViewData["Title"] = "Counter";
+}
+
+
+@section ReactComponentScripts
+{
+    <!--
+        this content will be rendered by RenderSection specified in _Layout
+        -->
+    <script src="~/components/counter.js"></script>
+}
+
+<!--
+<script>
+    ReactDOM.render(React.createElement(Components.Counter, { "name": "Ryan" }), document.getElementById("root"));
+</script>
+-->
+@*@Html.React("Components.Counter", new
+    {
+        name = "Ryan"
+    }, serverOnly: false, clientOnly: true, containerId: "root")*@

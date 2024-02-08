@@ -1,0 +1,16 @@
+{
+  "presets": [ "@babel/preset-env", "@babel/preset-react" ],
+  "plugins": [
+    //https://stackoverflow.com/a/62235533/3015974
+   // "@babel/plugin-proposal-class-properties",
+   // "@babel/plugin-proposal-private-methods",
+    "@babel/proposal-object-rest-spread",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/proposal-class-properties",
+    //https://stackoverflow.com/a/64083314/3015974
+    "@babel/plugin-transform-runtime"
+  ],
+  "ignore": [
+    "/(node_modules)/"
+  ]
+}

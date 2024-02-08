@@ -1,0 +1,158 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+		<Configurations>Debug;Release;SPADebug</Configurations>
+		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+		<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+	<PropertyGroup>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<SpaRoot>FrontEnd\</SpaRoot>
+		<ServerRoot>ServerSide\</ServerRoot>
+		<FrontEnd>FrontEnd\</FrontEnd>
+		<BackEnd>BackEnd\</BackEnd>
+		<sandbox>.sandbox</sandbox>
+		<noderepo>noderepo\</noderepo>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(FrontEnd)node_modules\**;$(FrontEnd)node_modules.r18\**</DefaultItemExcludes>
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(BackEnd)node_modules\**;$(BackEnd)node_modules.r18\**</DefaultItemExcludes>
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(sandbox);$(sandbox)\**</DefaultItemExcludes>
+	</PropertyGroup>
+	<PropertyGroup>
+		<buildmode>production</buildmode>
+		<opsys>linux</opsys>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='SPADebug'">
+		<DefineConstants>DEBUG;TRACE;SPADEBUG</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'!='SPADebug'">
+		<DefineConstants>USE_REACT</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='SPADebug'">
+		<buildmode>development</buildmode>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<buildmode>development</buildmode>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+		<opsys>windows</opsys>
+	</PropertyGroup>
+
+
+	<PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+		<opsys>windows</opsys>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.15" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Content Remove="$(SpaRoot)**" />
+		<None Remove="$(SpaRoot)**" />
+		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Content Remove="$(FrontEnd)**" />
+		<None Remove="$(FrontEnd)**" />
+		<None Include="$(FrontEnd)**" Exclude="$(FrontEnd)node_modules\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Content Remove="$(BackEnd)**" />
+		<None Remove="$(BackEnd)**" />
+		<None Include="$(BackEnd)**" Exclude="$(BackEnd)node_modules\**" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<DefaultItemExcludes>$(DefaultItemExcludes);app.log;$(sandbox)**;$(wwwroot)appdist\**;$(wwwroot)video\**</DefaultItemExcludes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<DistFiles Include="$(FrontEnd)public\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<DistFiles Include="$(wwwroot)**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <DistFiles Remove=".sandbox\**" />
+	</ItemGroup>
+	
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Codercrest.ReactNet\Codercrest.ReactNet.csproj" />
+	</ItemGroup>
+
+	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') And '$(BuildingInsideVisualStudio)' != 'true' ">
+		<!-- Ensure Node.js is installed -->
+		<Exec Command="node --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+	</Target>
+	
+	<Target Name="PublishFrontEnd" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'SPADebug' And !Exists('$(SpaRoot)node_modules') And '$(BuildingInsideVisualStudio)' != 'true'">
+		<Message Importance="high" Text="Target : PublishFrontEnd" />
+		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install rimraf@^3.0.2" />
+		<!--
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run cleanmods" />
+		-->
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+		<!-- Include the newly-built files in the publish output -->
+		<ItemGroup>
+			<DistFiles Include="$(SpaRoot)build\**" />
+			<DistFiles Include="$(SpaRoot)dist\**" />
+			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+				<RelativePath>%(DistFiles.Identity)</RelativePath>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="PublishBackEnd" AfterTargets="Build" Condition="'$(Configuration)' != 'SPADebug' And '$(BuildingInsideVisualStudio)' != 'true'">
+		<Message Importance="high" Text="Target : PublishBackEnd" />
+		<Exec WorkingDirectory="$(BackEnd)" Command="npm install" />
+		<Exec Condition=" '$(buildmode)'=='development'" WorkingDirectory="$(BackEnd)" Command="npm run dist" />
+		<Exec Condition=" '$(buildmode)'=='production'" WorkingDirectory="$(BackEnd)" Command="npm run build" />
+		<ItemGroup>
+			<DistFiles Include="$(wwwroot)appdist\**" />
+			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+				<RelativePath>%(DistFiles.Identity)</RelativePath>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+
+</Project>

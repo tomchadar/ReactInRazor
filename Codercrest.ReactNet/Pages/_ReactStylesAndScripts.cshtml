@@ -1,0 +1,13 @@
+﻿@namespace Codercrest.ReactNet.Pages
+@using React.AspNet
+
+@section ReactStyles
+{
+    @Html.ReactGetStylePaths()
+}
+@section ReactScripts
+{
+    @Html.ReactGetScriptPaths()
+    @Html.ReactInitJavaScript()
+
+}

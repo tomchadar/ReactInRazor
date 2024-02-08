@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.js": "appdist/js/main.c703312e.chunk.js",
+    "main.js.map": "appdist/js/main.c703312e.chunk.js.map",
+    "runtime-main.js": "appdist/js/runtime-main.1da48e90.js",
+    "runtime-main.js.map": "appdist/js/runtime-main.1da48e90.js.map",
+    "vendor.js": "appdist/js/vendor.77c92d41.chunk.js",
+    "vendor.js.map": "appdist/js/vendor.77c92d41.chunk.js.map",
+    "js/main.c703312e.chunk.js.LICENSE.txt": "appdist/js/main.c703312e.chunk.js.LICENSE.txt",
+    "js/vendor.77c92d41.chunk.js.LICENSE.txt": "appdist/js/vendor.77c92d41.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "appdist/js/main.c703312e.chunk.js",
+    "appdist/js/runtime-main.1da48e90.js",
+    "appdist/js/vendor.77c92d41.chunk.js"
+  ]
+}

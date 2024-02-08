@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    @inject IHttpContextAccessor contextAccessor
+}
+@using Codercrest.ReactNet
+@using Codercrest.ReactNet.Pages
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <title>@ViewData["Title"] - ReactInRazor</title>
+    @await RenderSectionAsync("HeadStyles", required: false)
+    @await RenderSectionAsync("HeadScrips", required: false)
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @{
+#if !SPADEBUG
+    }
+    @{ await Html.RenderPartialAsync("_ReactStyles"); }
+    @{
+#endif
+    }
+
+</head>
+<body>
+    @{await Html.RenderPartialAsync("_Menu"); }
+
+    <main id="root" role="main" data-html-location="asp-shared-layout-cshtml" class="appcontainer container-no-pad">
+        @RenderBody()
+    </main>
+    @{
+#if SHOWFOOTER
+    }
+    @{await Html.RenderPartialAsync("_Footer"); }
+    @{
+#endif
+    }
+
+    @{
+#if !SPADEBUG
+    }
+    @{ await Html.RenderPartialAsync("_ReactScripts"); }
+    @{
+#endif
+    }
+
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("AppMenuItemList", required: false)
+    @await RenderSectionAsync("ReactComponentScripts", required: false)
+    @await RenderSectionAsync("SetContentLanguageScripts", required: false)
+
+</body>
+</html>
